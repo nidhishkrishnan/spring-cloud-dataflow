@@ -10,5 +10,16 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  batch:
+    job:
+      enabled: false
+  cloud:
+    dataflow:
+      features:
+        streams-enabled: false
 server:
   port: 8080
+
+
+logging:
+  level: debug
