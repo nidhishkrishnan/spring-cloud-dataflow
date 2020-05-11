@@ -18,7 +18,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.task.batch.listener.TaskBatchExecutionListener;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 @RequiredArgsConstructor
-public class BatchConfig /*extends DefaultBatchConfigurer*/ {
+public class BatchConfig {
 
     @Autowired
     public JobBuilderFactory jobBuilder;
@@ -44,16 +43,6 @@ public class BatchConfig /*extends DefaultBatchConfigurer*/ {
 
 	@Autowired
 	private TaskBatchExecutionListener taskBatchExecutionListener;
-//
-
-//    @Autowired
-//    private ApplicationContext applicationContext;
-
-//	@Override
-//    @Autowired
-//    public void setDataSource(DataSource dataSource) {
-//        super.setDataSource(dataSource);
-//    }
 
     @Bean
     public Job initialJob() {
@@ -63,16 +52,6 @@ public class BatchConfig /*extends DefaultBatchConfigurer*/ {
                 .build();
     }
 
-//	@Bean
-//	public Job job2() throws NoSuchJobException, DuplicateJobException {
-//		return jobBuilder.get("sdssssfsdfds")
-//				.incrementer(new RunIdIncrementer())
-//				.start(orderStep1())
-//				.next(stepBuilder.get("orderStep2").tasklet((stepContribution, chunkContext) -> {
-//					System.out.println("job2 step");
-//					return RepeatStatus.FINISHED;}).build())
-//				.build();
-//	}
 
     public Job getJob(String jobName) throws Exception {
         try {
@@ -89,39 +68,11 @@ public class BatchConfig /*extends DefaultBatchConfigurer*/ {
             jobRegistry.register(jobFactory);
             return job;
         }
-
-
-//		return jobBuilder.get(jobName)
-//				.incrementer(new RunIdIncrementer()).listener(listener())
-//				.flow(orderStep1()).end().build();
     }
-
-//
-//	public Job getJob() {
-//
-//		return jobBuilder.get("dasdas")
-//				.incrementer(new RunIdIncrementer()).listener(listener())
-//				.flow(orderStep1()).end().build();
-//	}
-
 
     public Step orderStep1() {
         return stepBuilder.get("orderStep1").<String, String>chunk(1)
                 .reader(new Reader()).processor(new Processor())
                 .writer(new Writer()).build();
     }
-
-
-//	public JobExecutionListener listener() {
-//		return new JobCompletionListener();
-//	}
-
-	/*@Bean
-	public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor(JobRegistry jobRegistry) {
-		JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor = new JobRegistryBeanPostProcessor();
-		jobRegistryBeanPostProcessor.setJobRegistry(jobRegistry);
-		return jobRegistryBeanPostProcessor;
-	}*/
-
-
 }

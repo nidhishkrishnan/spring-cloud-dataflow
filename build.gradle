@@ -33,11 +33,14 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-task-batch'
 
     implementation 'org.postgresql:postgresql'
-    implementation ('org.springframework.cloud:spring-cloud-starter-dataflow-server:2.1.0.RELEASE') {
+    compile ('org.springframework.cloud:spring-cloud-starter-dataflow-server:2.1.0.RELEASE') {
         exclude group: 'org.springframework.cloud', module: 'spring-cloud-dataflow-platform-cloudfoundry'
         exclude group: 'org.springframework.cloud', module: 'spring-cloud-dataflow-platform-kubernetes'
     }
-
+    implementation ('com.fasterxml.jackson.dataformat:jackson-dataformat-xml') {
+        exclude group: 'org.jayway.jsonpath', module: 'json-path'
+        exclude group: 'net.minidev', module: 'json-smart'
+    }
     implementation 'org.slf4j:slf4j-api'
     compileOnly 'org.projectlombok:lombok'
     implementation 'org.hsqldb:hsqldb'
